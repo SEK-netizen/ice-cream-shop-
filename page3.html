@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>About Sweet Scoops</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #fff0f5;
+      margin: 0;
+      color: #633047;
+    }
+
+    h1 {
+      color: #a83268;
+      padding: 20px;
+    }
+
+    nav {
+      background: #793653;
+      padding: 15px;
+    }
+
+    nav a {
+      color: white;
+      margin: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffc4df;
+    }
+
+    h2 {
+      color: #a83268;
+    }
+
+    /* Horizontal story section */
+    .story {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      max-width: 900px;
+      margin: 35px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px #d99ab655;
+      text-align: left;
+      transition: 0.3s;
+    }
+
+    .story:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px #d99ab677;
+    }
+
+    .story img {
+      width: 40%;
+      max-width: 320px;
+      border-radius: 15px;
+      transition: 0.4s;
+    }
+
+    .story img:hover {
+      transform: scale(1.04);
+    }
+
+    .story-text {
+      flex: 1;
+    }
+
+    .story-text p {
+      line-height: 1.7;
+    }
+
+    /* Contact section */
+    .contact {
+      background: #793653;
+      color: white;
+      margin: 30px auto;
+      padding: 25px;
+      max-width: 700px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px #79365333;
+    }
+
+    .contact h2 {
+      color: #ffd1e4;
+    }
+
+    .contact a {
+      color: #ffd1e4;
+      text-decoration: none;
+    }
+
+    .contact a:hover {
+      text-decoration: underline;
+    }
+
+    .home-link {
+      display: inline-block;
+      margin: 15px 0 30px;
+      padding: 12px 22px;
+      background: #a83268;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+
+    .home-link:hover {
+      background: #793653;
+      transform: scale(1.05);
+    }
+
+    /* Mobile screen */
+    @media (max-width: 600px) {
+      .story {
+        flex-direction: column;
+        margin: 20px 15px;
+        text-align: center;
+      }
+
+      .story img {
+        width: 100%;
+      }
+
+      nav a {
+        display: inline-block;
+        margin: 7px;
+      }
+
+      .contact {
+        margin: 20px 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>❤️ About Sweet Scoops</h1>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="page1.html">Flavors</a>
+    <a href="page2.html">Menu</a>
+    <a href="page3.html">About</a>
+  </nav>
+
+  <section class="story">
+    <img
+      src="https://images.unsplash.com/photo-1560008581-09826d1de69e?auto=format&fit=crop&w=500&q=80"
+      alt="Our delicious ice cream">
+
+    <div class="story-text">
+      <h2>Our Story 🍦</h2>
+      <p>
+        Sweet Scoops is a happy place for ice cream lovers!
+        We believe every scoop should bring a smile to your face.
+        Our goal is to make every moment sweeter with delicious
+        flavors and lots of happiness.
+      </p>
+
+      <h2>Our Mission 💗</h2>
+      <p>
+        We want to spread happiness with delicious treats
+        and make every visit a sweet memory.
+      </p>
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2>Contact Us 📞</h2>
+
+    <p>
+      📧 Email:
+      <a href="mailto:hello@example.com">
+        hello@example.com
+      </a>
+    </p>
+
+    <p>
+      📱 Phone:
+      <a href="tel:+923001234567">
+        +92 300 1234567
+      </a>
+    </p>
+
+    <p>📍 Address: Islamabad, Pakistan</p>
+  </section>
+
+  <h3>Thank You for Visiting! 🍦</h3>
+
+  <a class="home-link" href="index.html">
+    🏠 Back to Home
+  </a>
+
+</body>
+</html>

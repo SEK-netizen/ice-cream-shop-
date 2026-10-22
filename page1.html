@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Scoops | Our Flavors</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #702746;
+      text-align: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #ffe0ec, #fff5f9, #ffd3e4);
+      background-size: 300% 300%;
+      animation: bgMove 12s ease infinite;
+    }
+
+    header {
+      padding: 22px 15px;
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 5px 25px #a8326820;
+      border-radius: 0 0 30px 30px;
+    }
+
+    header h1 {
+      color: #c21867;
+      font-size: clamp(30px, 5vw, 48px);
+      text-shadow: 2px 3px 0 #ffc4dc;
+      animation: popIn 0.8s ease;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 17px;
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 20px 12px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      background: linear-gradient(135deg, #a83268, #e34c91);
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: bold;
+      box-shadow: 0 5px 12px #a8326830;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      transform: translateY(-5px) scale(1.06);
+      box-shadow: 0 10px 20px #a8326850;
+    }
+
+    .hero {
+      padding: 30px 15px 35px;
+    }
+
+    .hero .tag {
+      display: inline-block;
+      padding: 8px 18px;
+      color: #b12665;
+      background: #ffffffb8;
+      border: 1px solid #ffc0d9;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+
+    .hero h2 {
+      margin: 18px 0 12px;
+      color: #a83268;
+      font-size: clamp(32px, 6vw, 54px);
+      text-shadow: 2px 3px 0 white;
+    }
+
+    .hero p {
+      font-size: 19px;
+      line-height: 1.6;
+    }
+
+    .surprise-btn {
+      margin-top: 22px;
+      border: none;
+      border-radius: 30px;
+      padding: 15px 28px;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f02d83, #9e287a);
+      box-shadow: 0 8px 20px #c2186740;
+      transition: 0.3s;
+    }
+
+    .surprise-btn:hover {
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 13px 25px #c2186760;
+    }
+
+    #surprise-result {
+      min-height: 28px;
+      margin: 15px 0 0;
+      color: #a83268;
+      font-weight: bold;
+    }
+
+    .section-title {
+      margin: 12px 0 25px;
+      color: #a83268;
+      font-size: 30px;
+    }
+
+    /* Six horizontal flavor cards */
+    .flavors-container {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      padding: 0 25px;
+      margin: 0 auto 45px;
+      perspective: 1200px;
+    }
+
+    .flavor-card {
+      position: relative;
+      min-width: 0;
+      padding: 15px;
+      border-radius: 25px;
+      border: 2px solid #ffffff;
+      background: rgba(255,255,255,0.75);
+      box-shadow: 0 12px 28px #91365c20;
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: cardEnter 0.8s ease both;
+    }
+
+    .flavor-card:nth-child(2) { animation-delay: 0.1s; }
+    .flavor-card:nth-child(3) { animation-delay: 0.2s; }
+    .flavor-card:nth-child(4) { animation-delay: 0.3s; }
+    .flavor-card:nth-child(5) { animation-delay: 0.4s; }
+    .flavor-card:nth-child(6) { animation-delay: 0.5s; }
+
+    .flavor-card:hover {
+      transform: translateY(-12px) rotateX(4deg) rotateY(-4deg) scale(1.025);
+      box-shadow: 0 25px 40px #91365c40;
+    }
+
+    .flavor-card img {
+      display: block;
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      border-radius: 17px;
+      transition: transform 0.4s ease;
+    }
+
+    .flavor-card:hover img {
+      transform: translateZ(20px) scale(1.035);
+    }
+
+    .flavor-card h3 {
+      margin: 17px 0 10px;
+      font-size: 23px;
+      color: #a83268;
+    }
+
+    .flavor-card p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      position: absolute;
+      z-index: 2;
+      top: 10px;
+      right: 10px;
+      padding: 7px 12px;
+      color: white;
+      background: #e83e83;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px #a8326850;
+      animation: badgeGlow 2s infinite alternate;
+    }
+
+    .popular {
+      background: #b62a68;
+      left: 10px;
+      right: auto;
+    }
+
+    .chocolate { background: linear-gradient(145deg, #fff, #f5d7c6); }
+    .strawberry { background: linear-gradient(145deg, #fff, #ffd8e6); }
+    .vanilla { background: linear-gradient(145deg, #fff, #fff0c9); }
+    .mango { background: linear-gradient(145deg, #fff, #ffe3a0); }
+    .pistachio { background: linear-gradient(145deg, #fff, #d9f3d2); }
+    .blueberry { background: linear-gradient(145deg, #fff, #dce7ff); }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      padding: 25px 15px;
+      margin: 0 auto;
+      background: #ffffff60;
+    }
+
+    .feature {
+      min-width: 180px;
+      padding: 12px;
+      color: #a83268;
+      font-size: 16px;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature span {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      padding: 30px 15px;
+      color: white;
+      background: linear-gradient(135deg, #a83268, #df5993);
+    }
+
+    footer h2 {
+      margin-bottom: 10px;
+    }
+
+    footer p {
+      line-height: 1.8;
+    }
+
+    @keyframes bgMove {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardEnter {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes badgeGlow {
+      from { box-shadow: 0 3px 8px #a8326830; }
+      to { box-shadow: 0 3px 17px #e83e8390; }
+    }
+
+    @media (max-width: 850px) {
+      .flavors-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .flavors-container {
+        grid-template-columns: 1fr;
+        padding: 0 18px;
+      }
+
+      .flavor-card img {
+        height: 220px;
+      }
+
+      nav a {
+        padding: 10px 15px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🍦 Sweet Scoops</h1>
+    <p>A Little Scoop of Happiness!</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="page1.html">Flavors</a>
+    <a href="page2.html">Menu</a>
+    <a href="page3.html">About</a>
+  </nav>
+
+  <section class="hero">
+    <span class="tag">✦ PREMIUM • FRESH • DELICIOUS ✦</span>
+    <h2>🍨 Our Delicious Flavors</h2>
+    <p>Six amazing flavors. Endless happiness!</p>
+
+    <button class="surprise-btn" onclick="surpriseMe()">
+      🎁 Surprise Me!
+    </button>
+
+    <div id="surprise-result" aria-live="polite"></div>
+  </section>
+
+  <h2 class="section-title">✨ Find Your Favorite Scoop ✨</h2>
+
+  <main class="flavors-container" id="flavors">
+
+    <article class="flavor-card chocolate">
+      <span class="badge popular">⭐ Popular</span>
+      <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=500&q=80"
+        alt="Chocolate ice cream">
+      <h3>🍫 Chocolate</h3>
+      <p>Rich, smooth and creamy chocolate happiness.</p>
+    </article>
+
+    <article class="flavor-card strawberry">
+      <img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=500&q=80"
+        alt="Strawberry ice cream">
+      <h3>🍓 Strawberry</h3>
+      <p>A sweet and fruity treat full of joy.</p>
+    </article>
+
+    <article class="flavor-card vanilla">
+      <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?auto=format&fit=crop&w=500&q=80"
+        alt="Vanilla ice cream">
+      <h3>🍦 Vanilla</h3>
+      <p>A timeless classic with a creamy taste.</p>
+    </article>
+
+    <article class="flavor-card mango">
+      <span class="badge">☀️ Summer Pick</span>
+      <img src="https://media.istockphoto.com/id/155913469/photo/scoops-of-yellow-ice-cream.jpg?s=2048x2048&w=is&k=20&c=vPVJ0RsjNKBYkqZWb5mN-vWZlqLsOYJqC9TmCxSH2LY="
+        alt="Mango ice cream">
+      <h3>🥭 Mango</h3>
+      <p>A refreshing tropical taste in every scoop.</p>
+    </article>
+
+    <article class="flavor-card pistachio">
+      <span class="badge">🆕 New</span>
+      <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?auto=format&fit=crop&w=500&q=80"
+        alt="Pistachio inspired ice cream">
+      <h3>💚 Pistachio Dream</h3>
+      <p>A nutty, creamy flavor for a dreamy treat.</p>
+    </article>
+
+    <article class="flavor-card blueberry">
+      <span class="badge">🆕 New</span>
+      <img src="https://images.unsplash.com/photo-1501446529957-6226bd447c46?auto=format&fit=crop&w=500&q=80"
+        alt="Blueberry inspired frozen dessert">
+      <h3>🫐 Blueberry Bliss</h3>
+      <p>A berry-inspired delight bursting with sweetness.</p>
+    </article>
+
+  </main>
+
+  <section class="features">
+    <div class="feature">
+      <span>🌿</span>
+      Made with Care
+    </div>
+    <div class="feature">
+      <span>❤️</span>
+      Made with Love
+    </div>
+    <div class="feature">
+      <span>❄️</span>
+      Cool & Creamy
+    </div>
+    <div class="feature">
+      <span>😊</span>
+      Happiness in Every Scoop
+    </div>
+  </section>
+
+  <footer>
+    <h2>🍦 Good Things Come in Scoops!</h2>
+    <p>Thank you for visiting Sweet Scoops 💗</p>
+    <p>One scoop, a million smiles!</p>
+  </footer>
+
+  <script>
+    // Interactive 3D card tilt
+    const cards = document.querySelectorAll(".flavor-card");
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (!reduceMotion) {
+      cards.forEach(card => {
+        card.addEventListener("mousemove", event => {
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width;
+          const y = (event.clientY - rect.top) / rect.height;
+
+          const rotateY = (x - 0.5) * 12;
+          const rotateX = (0.5 - y) * 10;
+
+          card.style.transform =
+            `translateY(-8px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+        });
+      });
+    }
+
+    // Surprise Me button
+    function surpriseMe() {
+      const flavors = [
+        "🍫 Chocolate — rich and creamy!",
+        "🍓 Strawberry — sweet and fruity!",
+        "🍦 Vanilla — a timeless classic!",
+        "🥭 Mango — tropical happiness!",
+        "💚 Pistachio Dream — nutty and dreamy!",
+        "🫐 Blueberry Bliss — berry delicious!"
+      ];
+
+      const choice = Math.floor(Math.random() * flavors.length);
+
+      document.getElementById("surprise-result").textContent =
+        "Today's pick for you: " + flavors[choice];
+
+      cards.forEach(card => {
+        card.style.outline = "none";
+      });
+
+      cards[choice].style.outline = "4px solid #e83e83";
+      cards[choice].scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "center"
+      });
+    }
+  </script>
+
+</body>
+</html>
+

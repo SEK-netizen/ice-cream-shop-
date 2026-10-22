@@ -1,0 +1,844 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Scoops | Menu & Cart</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #71304f;
+      background: linear-gradient(135deg, #fff0f5, #ffe0ed, #fff7fb);
+      background-size: 300% 300%;
+      animation: bgMove 12s ease infinite;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 25px 15px;
+      color: white;
+      background: linear-gradient(135deg, #a83268, #f36ba5);
+      box-shadow: 0 7px 20px #a8326830;
+    }
+
+    header h1 {
+      font-size: clamp(30px, 5vw, 46px);
+      text-shadow: 2px 3px 0 #79234d;
+    }
+
+    header p {
+      margin-top: 10px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 20px 12px;
+    }
+
+    nav a {
+      color: white;
+      background: #793653;
+      padding: 12px 22px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: #e34c91;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px #a8326840;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 25px 15px 35px;
+    }
+
+    .hero h2 {
+      color: #a83268;
+      font-size: clamp(28px, 4vw, 42px);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      line-height: 1.7;
+    }
+
+    .shop-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 25px;
+      max-width: 1300px;
+      padding: 0 20px 45px;
+      margin: auto;
+      align-items: start;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      perspective: 1000px;
+    }
+
+    .product {
+      position: relative;
+      padding: 15px;
+      text-align: center;
+      background: #ffffffd9;
+      border: 2px solid white;
+      border-radius: 23px;
+      box-shadow: 0 10px 25px #a832681c;
+      transition: transform 0.35s, box-shadow 0.35s;
+      animation: cardAppear 0.7s ease both;
+    }
+
+    .product:hover {
+      transform: translateY(-8px) rotateX(3deg) rotateY(-3deg);
+      box-shadow: 0 20px 35px #a8326840;
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 16px;
+      transition: transform 0.4s;
+    }
+
+    .product:hover img {
+      transform: scale(1.04);
+    }
+
+    .product h3 {
+      color: #a83268;
+      font-size: 22px;
+      margin: 15px 0 10px;
+    }
+
+    .description {
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 42px;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      color: #a83268;
+      font-size: 21px;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1;
+      padding: 7px 11px;
+      border-radius: 20px;
+      background: #16834b;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      animation: glow 1.8s infinite alternate;
+    }
+
+    .product-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .add-btn, .buy-btn, .checkout-btn {
+      width: 100%;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 15px;
+      color: white;
+      background: linear-gradient(135deg, #a83268, #ec5799);
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .buy-btn {
+      background: linear-gradient(135deg, #e78b20, #ffb844);
+      color: #542b10;
+    }
+
+    .add-btn:hover, .buy-btn:hover, .checkout-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 15px #a8326840;
+    }
+
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid #6d2050;
+      outline-offset: 3px;
+    }
+
+    /* Cart panel */
+    .cart {
+      position: sticky;
+      top: 15px;
+      padding: 22px;
+      border: 2px solid white;
+      border-radius: 24px;
+      background: #ffffffed;
+      box-shadow: 0 12px 30px #a8326825;
+    }
+
+    .cart h2 {
+      color: #a83268;
+      font-size: 27px;
+      margin-bottom: 8px;
+    }
+
+    .cart-subtitle {
+      font-size: 14px;
+      color: #8b6074;
+      margin-bottom: 18px;
+    }
+
+    .cart-count {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 27px;
+      height: 27px;
+      padding: 0 7px;
+      margin-left: 5px;
+      border-radius: 50%;
+      color: white;
+      background: #e34c91;
+      font-size: 14px;
+    }
+
+    #cart-items {
+      list-style: none;
+    }
+
+    .empty-cart {
+      padding: 22px 5px;
+      color: #a27b90;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .cart-item {
+      padding: 13px 0;
+      border-bottom: 1px solid #f2d6e2;
+    }
+
+    .item-top, .item-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .item-top {
+      margin-bottom: 10px;
+    }
+
+    .item-name {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .item-price {
+      color: #a83268;
+      font-size: 14px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .item-controls {
+      justify-content: flex-start;
+    }
+
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 50%;
+      background: #ffe0ed;
+      color: #a83268;
+      font-size: 19px;
+      cursor: pointer;
+    }
+
+    .quantity {
+      font-weight: bold;
+    }
+
+    .remove-btn {
+      margin-left: auto;
+      border: none;
+      background: none;
+      color: #bc3264;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .cart-summary {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 2px dashed #eab5cc;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 12px 0;
+      font-size: 15px;
+    }
+
+    .total-row {
+      font-size: 21px;
+      font-weight: bold;
+      color: #a83268;
+    }
+
+    .checkout-btn {
+      margin-top: 10px;
+      padding: 14px;
+    }
+
+    .clear-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #d99ab6;
+      border-radius: 22px;
+      background: white;
+      color: #a83268;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .notice {
+      min-height: 20px;
+      margin-top: 12px;
+      color: #a83268;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    footer {
+      padding: 25px 15px;
+      text-align: center;
+      color: white;
+      background: linear-gradient(135deg, #a83268, #e75d9a);
+      line-height: 1.8;
+    }
+
+    /* Custom purchase popup */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #351023a8;
+      backdrop-filter: blur(6px);
+    }
+
+    .popup-overlay.show {
+      display: flex;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .popup-box {
+      width: min(100%, 390px);
+      padding: 32px 24px;
+      border: 3px solid white;
+      border-radius: 28px;
+      background: linear-gradient(145deg, #fff7fb, #ffe0ed);
+      box-shadow: 0 20px 60px #0004;
+      animation: popupIn 0.35s ease;
+    }
+
+    .popup-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+      animation: bounce 0.7s ease;
+    }
+
+    .popup-box h2 {
+      color: #a83268;
+      margin-bottom: 12px;
+    }
+
+    .popup-box p {
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .popup-close {
+      border: none;
+      padding: 13px 28px;
+      border-radius: 25px;
+      background: #a83268;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @keyframes backgroundMove {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes cardAppear {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 3px 8px #a8326830; }
+      to { box-shadow: 0 3px 17px #e83e8390; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popupIn {
+      from { opacity: 0; transform: scale(0.8) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @media (max-width: 850px) {
+      .shop-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .cart {
+        position: static;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .shop-layout {
+        padding: 0 14px 30px;
+      }
+
+      nav a {
+        padding: 10px 14px;
+      }
+
+      .product img {
+        height: 210px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🍦 Sweet Scoops</h1>
+  <p>A Little Scoop of Happiness!</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="page1.html">Flavors</a>
+  <a href="page2.html">Menu</a>
+  <a href="page3.html">About</a>
+</nav>
+
+<section class="hero">
+  <h2>📋 Our Special Menu</h2>
+  <p>Choose your favorite ice cream and enjoy every scoop! 🍨</p>
+</section>
+
+<main class="shop-layout">
+
+  <section class="menu-grid" aria-label="Ice cream menu">
+
+    <article class="product">
+      <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?auto=format&fit=crop&w=400&q=80"
+        alt="Vanilla ice cream cone">
+      <h3>🍦 Vanilla Cone</h3>
+      <p class="description">A classic creamy and delicious treat.</p>
+      <p class="price">Rs. 150</p>
+      <div class="product-buttons">
+        <button class="add-btn" onclick="addToCart('vanilla')">🛒 Add to Cart</button>
+        <button class="buy-btn" onclick="buyNow('vanilla')">💗 Buy Now</button>
+      </div>
+    </article>
+
+    <article class="product">
+      <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=400&q=80"
+        alt="Chocolate ice cream">
+      <h3>🍫 Chocolate Cup</h3>
+      <p class="description">Rich chocolate flavor in every scoop.</p>
+      <p class="price">Rs. 200</p>
+      <div class="product-buttons">
+        <button class="add-btn" onclick="addToCart('chocolate')">🛒 Add to Cart</button>
+        <button class="buy-btn" onclick="buyNow('chocolate')">💗 Buy Now</button>
+      </div>
+    </article>
+
+    <article class="product">
+      <img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=400&q=80"
+        alt="Strawberry ice cream">
+      <h3>🍓 Strawberry Sundae</h3>
+      <p class="description">Sweet, fruity, and full of happiness.</p>
+      <p class="price">Rs. 300</p>
+      <div class="product-buttons">
+        <button class="add-btn" onclick="addToCart('strawberry')">🛒 Add to Cart</button>
+        <button class="buy-btn" onclick="buyNow('strawberry')">💗 Buy Now</button>
+      </div>
+    </article>
+
+    <article class="product">
+      <img src="https://media.istockphoto.com/id/1616531580/photo/sorbet.jpg?s=1024x1024&w=is&k=20&c=e5niaGZB49TUGRG3pwriyvh5ufLlfDJFgJQrhiEKTiQ="
+        alt="Mango frozen dessert">
+      <h3>🥭 Mango Delight</h3>
+      <p class="description">A refreshing tropical fruity treat.</p>
+      <p class="price">Rs. 250</p>
+      <div class="product-buttons">
+        <button class="add-btn" onclick="addToCart('mango')">🛒 Add to Cart</button>
+        <button class="buy-btn" onclick="buyNow('mango')">💗 Buy Now</button>
+      </div>
+    </article>
+
+    <article class="product">
+      <span class="badge">✨ NEW</span>
+      <img src="https://imgs.search.brave.com/pZKQqSB66-nsCvlFwoknE64e7G5TDMkFev5v94YjKNg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNjEv/ODAwLzAzMC9zbWFs/bC9kZWxpY2lvdXMt/c2Nvb3BzLW9mLXBp/c3RhY2hpby1pY2Ut/Y3JlYW0taW4tYS10/cmFuc3BhcmVudC1n/bGFzcy1yZWFkeS10/by1iZS1lbmpveWVk/LXBob3RvLmpwZw"
+        alt="Pistachio inspired ice cream">
+      <h3>💚 Pistachio Dream</h3>
+      <p class="description">A dreamy, nutty and creamy delight.</p>
+      <p class="price">Rs. 280</p>
+      <div class="product-buttons">
+        <button class="add-btn" onclick="addToCart('pistachio')">🛒 Add to Cart</button>
+        <button class="buy-btn" onclick="buyNow('pistachio')">💗 Buy Now</button>
+      </div>
+    </article>
+
+    <article class="product">
+      <span class="badge">✨ NEW</span>
+      <img src="https://imgs.search.brave.com/-VX93gA4dILWZRdhLan3PUC8WSaEOQQr9O5mz4vaMA0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNzEv/MDc5LzUzNi9zbWFs/bC90d28tc2Nvb3Bz/LWJsdWViZXJyeS1p/Y2UtY3JlYW0tcmVz/dC1vbi13b29kLXdp/dGgtYmx1ZWJlcnJp/ZXMtcGhvdG8uanBn"
+        alt="Blueberry inspired frozen dessert">
+      <h3>🫐 Blueberry Bliss</h3>
+      <p class="description">A berry-inspired treat bursting with sweetness.</p>
+      <p class="price">Rs. 320</p>
+      <div class="product-buttons">
+        <button class="add-btn" onclick="addToCart('blueberry')">🛒 Add to Cart</button>
+        <button class="buy-btn" onclick="buyNow('blueberry')">💗 Buy Now</button>
+      </div>
+    </article>
+
+  </section>
+
+  <aside class="cart" aria-label="Shopping cart">
+    <h2>🛒 Your Cart <span class="cart-count" id="cart-count">0</span></h2>
+    <p class="cart-subtitle">Your happiness is one scoop away!</p>
+
+    <ul id="cart-items" aria-live="polite"></ul>
+
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Items</span>
+        <span id="item-count">0</span>
+      </div>
+
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="subtotal">Rs. 0</span>
+      </div>
+
+      <div class="summary-row total-row">
+        <span>Total</span>
+        <span id="total">Rs. 0</span>
+      </div>
+
+      <button class="checkout-btn" id="checkout-btn" onclick="checkout()" disabled>
+        🎉 Buy Cart Items
+      </button>
+
+      <button class="clear-btn" id="clear-btn" onclick="clearCart()" disabled>
+        🗑️ Clear Cart
+      </button>
+
+      <p class="notice" id="cart-notice" aria-live="polite"></p>
+    </div>
+  </aside>
+
+</main>
+
+<footer>
+  <h2>💗 Sweet Scoops</h2>
+  <p>Made with Love and Happiness!</p>
+  <p>Every Scoop Tells a Story 🍦</p>
+</footer>
+
+<!-- Custom purchase popup -->
+<div class="popup-overlay" id="purchase-popup"
+  role="dialog" aria-modal="true" aria-labelledby="popup-title"
+  aria-describedby="popup-message">
+
+  <div class="popup-box">
+    <div class="popup-icon" id="popup-icon">🎉🍦</div>
+    <h2 id="popup-title">Thank You!</h2>
+    <p id="popup-message"></p>
+    <button class="popup-close" onclick="closePopup()">Awesome! 💗</button>
+  </div>
+</div>
+
+<script>
+  const products = {
+    vanilla: {
+      name: "Vanilla Cone",
+      price: 150
+    },
+    chocolate: {
+      name: "Chocolate Cup",
+      price: 200
+    },
+    strawberry: {
+      name: "Strawberry Sundae",
+      price: 300
+    },
+    mango: {
+      name: "Mango Delight",
+      price: 250
+    },
+    pistachio: {
+      name: "Pistachio Dream",
+      price: 280
+    },
+    blueberry: {
+      name: "Blueberry Bliss",
+      price: 320
+    }
+  };
+
+  const cart = {};
+
+  function addToCart(id) {
+    if (!products[id]) return;
+
+    cart[id] = (cart[id] || 0) + 1;
+    renderCart();
+
+    document.getElementById("cart-notice").textContent =
+      products[id].name + " added to your cart! 🍦";
+  }
+
+  // Buy a single product and show a confirmation popup.
+  function buyNow(id) {
+    if (!products[id]) return;
+
+    showPopup(
+      "🎉🍦",
+      "Thank You for Your Order!",
+      "You bought " + products[id].name +
+      " for Rs. " + products[id].price +
+      "! Thank you for choosing Sweet Scoops. Enjoy your treat! 💗"
+    );
+  }
+
+  function changeQuantity(id, amount) {
+    if (!cart[id]) return;
+
+    cart[id] += amount;
+
+    if (cart[id] <= 0) {
+      delete cart[id];
+    }
+
+    renderCart();
+  }
+
+  function removeItem(id) {
+    delete cart[id];
+    renderCart();
+    document.getElementById("cart-notice").textContent =
+      "Item removed from your cart.";
+  }
+
+  function clearCart() {
+    Object.keys(cart).forEach(id => delete cart[id]);
+    renderCart();
+  }
+
+  function renderCart() {
+    const list = document.getElementById("cart-items");
+    list.replaceChildren();
+
+    let totalItems = 0;
+    let totalPrice = 0;
+    const ids = Object.keys(cart);
+
+    ids.forEach(id => {
+      const product = products[id];
+      const quantity = cart[id];
+      const lineTotal = product.price * quantity;
+
+      totalItems += quantity;
+      totalPrice += lineTotal;
+
+      const li = document.createElement("li");
+      li.className = "cart-item";
+
+      const top = document.createElement("div");
+      top.className = "item-top";
+
+      const name = document.createElement("span");
+      name.className = "item-name";
+      name.textContent = product.name;
+
+      const price = document.createElement("span");
+      price.className = "item-price";
+      price.textContent = "Rs. " + lineTotal;
+
+      top.append(name, price);
+
+      const controls = document.createElement("div");
+      controls.className = "item-controls";
+
+      const minus = document.createElement("button");
+      minus.className = "qty-btn";
+      minus.textContent = "−";
+      minus.setAttribute("aria-label", "Decrease quantity");
+      minus.onclick = () => changeQuantity(id, -1);
+
+      const qty = document.createElement("span");
+      qty.className = "quantity";
+      qty.textContent = quantity;
+
+      const plus = document.createElement("button");
+      plus.className = "qty-btn";
+      plus.textContent = "+";
+      plus.setAttribute("aria-label", "Increase quantity");
+      plus.onclick = () => changeQuantity(id, 1);
+
+      const remove = document.createElement("button");
+      remove.className = "remove-btn";
+      remove.textContent = "Remove";
+      remove.onclick = () => removeItem(id);
+
+      controls.append(minus, qty, plus, remove);
+      li.append(top, controls);
+      list.appendChild(li);
+    });
+
+    if (ids.length === 0) {
+      const empty = document.createElement("li");
+      empty.className = "empty-cart";
+      empty.textContent = "🍨 Your cart is empty. Add your favorite ice cream!";
+      list.appendChild(empty);
+    }
+
+    document.getElementById("cart-count").textContent = totalItems;
+    document.getElementById("item-count").textContent = totalItems;
+    document.getElementById("subtotal").textContent = "Rs. " + totalPrice;
+    document.getElementById("total").textContent = "Rs. " + totalPrice;
+
+    document.getElementById("checkout-btn").disabled = totalItems === 0;
+    document.getElementById("clear-btn").disabled = totalItems === 0;
+  }
+
+  function checkout() {
+    const ids = Object.keys(cart);
+
+    if (ids.length === 0) return;
+
+    let total = 0;
+    const orderLines = [];
+
+    ids.forEach(id => {
+      const product = products[id];
+      const quantity = cart[id];
+
+      total += product.price * quantity;
+      orderLines.push(product.name + " x " + quantity);
+    });
+
+    showPopup(
+      "🛍️🎉",
+      "Your Order Summary",
+      orderLines.join(", ") +
+      ". Total: Rs. " + total +
+      ". This is a demo checkout; no real order or payment is processed."
+    );
+
+    clearCart();
+  }
+
+  function showPopup(icon, title, message) {
+    document.getElementById("popup-icon").textContent = icon;
+    document.getElementById("popup-title").textContent = title;
+    document.getElementById("popup-message").textContent = message;
+
+    document.getElementById("purchase-popup").classList.add("show");
+    document.querySelector(".popup-close").focus();
+  }
+
+  function closePopup() {
+    document.getElementById("purchase-popup").classList.remove("show");
+  }
+
+  // Close the popup by clicking outside it.
+  document.getElementById("purchase-popup").addEventListener("click", event => {
+    if (event.target.id === "purchase-popup") {
+      closePopup();
+    }
+  });
+
+  // Close the popup with the Escape key.
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closePopup();
+    }
+  });
+
+  renderCart();
+</script>
+
+</body>
+</html>
+

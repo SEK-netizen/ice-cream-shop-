@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sweet Scoops</title>
+    <style>
+      body{font-family:Arial; font-size:30px; text-align:center;background:#fff0f5}
+      header{background:#f4a6c1:padding:15px }
+      nav a{color:white:margin:8px}
+      img{width:250px;height:180px;object-fit:cover;border-radius:15px}
+      h2{color:#a83268}
+    </style>
+
+    <!-- NEW: Dynamic styling and 2D/3D effects -->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+        font-size: 20px;
+        color: #71304f;
+        background-color: #fff0f5;
+        background-attachment: fixed;
+        perspective: 1000px;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 220, 235, 0.50),
+          rgba(255, 245, 250, 0.80)
+        );
+      }
+
+      header {
+        position: relative;
+        overflow: hidden;
+        padding: 25px 15px;
+        color: white;
+        background: linear-gradient(135deg, #f4a6c1, #c94f89, #ff9ebc);
+        background-size: 200% 200%;
+        animation: gradientMove 7s ease infinite;
+        box-shadow: 0 8px 25px rgba(137, 45, 91, 0.25);
+      }
+
+      header::after {
+        content: "🍓  🍦  🍒";
+        position: absolute;
+        bottom: 8px;
+        right: 15px;
+        font-size: 22px;
+        opacity: 0.7;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      header h1 {
+        margin: 8px 0;
+        font-size: clamp(35px, 6vw, 58px);
+        text-shadow: 3px 5px 0 rgba(130, 35, 80, 0.2);
+        animation: popIn 1s ease both;
+      }
+
+      header p {
+        margin: 10px;
+        font-size: 21px;
+        letter-spacing: 1px;
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 12px;
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(12px);
+      }
+
+      nav a {
+        display: inline-block;
+        margin: 0 !important;
+        padding: 12px 22px;
+        border: 1px solid rgba(255,255,255,0.7);
+        border-radius: 30px;
+        color: #a83268;
+        text-decoration: none;
+        transition:
+          transform 0.3s ease,
+          background 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      nav a:hover {
+        color: white;
+        background: #c94f89;
+        transform: translateY(-5px) scale(1.06);
+        box-shadow: 0 8px 18px rgba(168, 50, 104, 0.3);
+      }
+
+      h2 {
+        margin: 35px 12px 15px;
+        color: #a83268;
+        font-size: clamp(25px, 4vw, 36px);
+        text-shadow: 1px 2px 0 white;
+        animation: popIn 0.8s ease both;
+      }
+
+      body > p {
+        margin: 18px 12px;
+        line-height: 1.6;
+      }
+
+      /* 3D ice-cream image */
+      body > img {
+        display: block;
+        width: min(85%, 420px);
+        height: 280px;
+        margin: 30px auto;
+        object-fit: cover;
+        border: 6px solid rgba(255,255,255,0.85);
+        border-radius: 25px;
+        box-shadow: 0 18px 35px rgba(110, 35, 72, 0.25);
+        transform: rotateX(0deg) rotateY(0deg);
+        transform-style: preserve-3d;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.3s ease;
+        animation: imageAppear 1.2s ease both;
+        will-change: transform;
+      }
+
+      body > img:hover {
+        box-shadow: 0 25px 45px rgba(168, 50, 104, 0.35);
+      }
+
+      /* Floating decorative scoops */
+      .floating-scoop {
+        position: fixed;
+        z-index: -1;
+        pointer-events: none;
+        font-size: 38px;
+        opacity: 0.45;
+        animation: float 4s ease-in-out infinite;
+      }
+
+      .scoop-one {
+        top: 28%;
+        left: 3%;
+      }
+
+      .scoop-two {
+        top: 55%;
+        right: 3%;
+        animation-delay: 1.5s;
+      }
+
+      .scoop-three {
+        bottom: 8%;
+        left: 8%;
+        animation-delay: 0.8s;
+      }
+
+      /* Specialities hover effect */
+      body > p:last-child {
+        display: inline-block;
+        margin: 20px auto 35px;
+        padding: 16px 25px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.65);
+        box-shadow: 0 8px 20px rgba(168,50,104,0.12);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      body > p:last-child:hover {
+        transform: translateY(-5px) rotateX(5deg);
+        box-shadow: 0 15px 25px rgba(168,50,104,0.2);
+      }
+
+      /* Animations */
+      @keyframes gradientMove {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(-8deg); }
+        50% { transform: translateY(-18px) rotate(8deg); }
+      }
+
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes imageAppear {
+        from {
+          opacity: 0;
+          transform: translateY(25px) rotateX(-8deg);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) rotateX(0);
+        }
+      }
+
+      @media (max-width: 600px) {
+        body {
+          font-size: 18px;
+        }
+
+        header {
+          padding: 20px 10px;
+        }
+
+        header p {
+          font-size: 17px;
+        }
+
+        nav {
+          gap: 8px;
+        }
+
+        nav a {
+          padding: 10px 15px;
+        }
+
+        body > img {
+          height: 230px;
+        }
+
+        .floating-scoop {
+          font-size: 26px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body style="background-image: url('https://imgs.search.brave.com/ysdi4lnMB9YHjLjaw005BElOGOp4BxSTQ1VTIsoca-U/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJhY2Nlc3Mu/Y29tL2Z1bGwvMTg0/MDI2NS5qcGc'); background-size: cover;">
+
+    <!-- NEW: Floating 2D decorations -->
+    <div class="floating-scoop scoop-one">🍦</div>
+    <div class="floating-scoop scoop-two">🍓</div>
+    <div class="floating-scoop scoop-three">🍨</div>
+
+    <header>
+      <h1>🍦Sweet Scoops</h1>
+      <p>A Little Scoop of Happiness!</p>
+    </header>
+
+    <nav>
+      <a href="index.html" style="margin-right:150px;"><b>Home</b></a>
+      <a href="page1.html" style="margin-right:150px;"><b>Flavors</b></a>
+      <a href="page2.html" style="margin-right:150px;"><b>Menu</b></a>
+      <a href="page3.html" style="margin-right:150px;"><b>About</b></a>
+    </nav>
+
+    <h2>Welcome to Sweet Scoops</h2>
+    <p>Enjoy our delicious and creamy ice-creams</p>
+
+    <img
+    src="https://images.unsplash.com/photo-1560008581-09826d1de69e?auto=format&fit=crop&w=600&q=80">
+
+    <h2>Our Specialities</h2>
+    <p>🍓 Strawberry | 🍫 Chocolate | 🍦 Vanilla</p>
+    <p>Made with Love and Happiness!</p>
+
+    <!-- NEW: Interactive 3D effect -->
+    <script>
+      const iceCreamImage = document.querySelector("body > img");
+
+      // Tilt the image gently according to mouse position.
+      if (iceCreamImage) {
+        iceCreamImage.addEventListener("mousemove", function(event) {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            return;
+          }
+
+          const rect = this.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width;
+          const y = (event.clientY - rect.top) / rect.height;
+
+          const rotateY = (x - 0.5) * 18;
+          const rotateX = (0.5 - y) * 18;
+
+          this.style.transition = "transform 0.08s ease";
+          this.style.transform =
+            `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+        });
+
+        iceCreamImage.addEventListener("mouseleave", function() {
+          this.style.transition = "transform 0.5s ease";
+          this.style.transform =
+            "perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)";
+        });
+      }
+
+      // Reveal a small movement when the user scrolls.
+      const headings = document.querySelectorAll("h2");
+
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.transition =
+                "opacity 0.6s ease, transform 0.6s ease";
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+
+        headings.forEach((heading) => {
+          heading.style.opacity = "0";
+          heading.style.transform = "translateY(50px)";
+          observer.observe(heading);
+        });
+      }
+    </script>
+  </body>
+</html>
